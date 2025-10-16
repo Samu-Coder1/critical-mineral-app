@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Share Uploaded Dataset</h2>
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label">Share Type</label>
+        <select class="form-select" name="shared_type">
+            <option value="role">Role</option>
+            <option value="user">User</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Role name or Username</label>
+        <input class="form-control" name="shared_value" required />
+    </div>
+    <button class="btn btn-primary" type="submit">Share</button>
+    <a class="btn btn-secondary" href="{{ url_for('admin_dashboard') }}">Cancel</a>
+</form>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ title }}</h2>
+<p>
+    {% if role == 'Administrator' %}
+        <a class="btn btn-success btn-sm" href="{{ url_for('admin_entity_add', entity=base_endpoint) }}">Add {{ title[:-1] }}</a>
+    {% endif %}
+    <a class="btn btn-secondary btn-sm" href="{{ url_for('admin_dashboard') }}">Back to Admin</a>
+</p>
+<table class="table table-sm table-striped">
+    <thead>
+        <tr>
+        {% for f in fields %}
+            <th>{{ f }}</th>
+        {% endfor %}
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for it in items %}
+        <tr>
+        {% for f in fields %}
+            <td>{{ it[f] }}</td>
+        {% endfor %}
+            <td>
+                {% if role == 'Administrator' %}
+                    <a class="btn btn-sm btn-primary" href="{{ url_for('admin_entity_edit', entity=base_endpoint, obj_id=it[fields[0]]) }}">Edit</a>
+                    <form method="post" action="{{ url_for('admin_entity_delete', entity=base_endpoint, obj_id=it[fields[0]]) }}" style="display:inline" onsubmit="return confirm('Delete item?');">
+                        <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                    </form>
+                {% else %}
+                    <span class="text-muted">Admin only</span>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

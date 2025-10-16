@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{% if user %}Edit{% else %}Add{% endif %} User</h2>
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input class="form-control" name="username" value="{{ user.Username if user else '' }}" required />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input class="form-control" name="password" value="{{ user.PasswordHash if user else '' }}" required />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input class="form-control" name="email" value="{{ user.Email if user else '' }}" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Role</label>
+        <select class="form-select" name="roleid">
+            {% for r in roles %}
+                <option value="{{ r.RoleID }}" {% if user and user.RoleID == r.RoleID %}selected{% endif %}>{{ r.RoleName }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button class="btn btn-primary" type="submit">Save</button>
+    <a class="btn btn-secondary" href="{{ url_for('admin_entity_list', entity='users') }}">Cancel</a>
+</form>
+{% endblock %}

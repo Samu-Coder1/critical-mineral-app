@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Uploaded Dataset</h2>
+{% if not records %}
+    <p>No uploaded dataset available.</p>
+{% else %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+            {% for c in cols %}
+                <th>{{ c }}</th>
+            {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+        {% for r in records %}
+            <tr>
+            {% for c in cols %}
+                <td>{{ r[c] }}</td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+{% endblock %}

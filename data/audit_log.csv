@@ -1,0 +1,5 @@
+Timestamp,Username,Action,Path,Details
+"2025-10-16T11:14:15.819315","admin01","audit_cleared","/admin/audit/clear","Cleared recent audit log and backed up to audit_log_20251016T111415Z.bak.csv"
+"2025-10-16T11:14:15.824764","admin01","audit_clear","/admin/audit/clear","Backup: audit_log_20251016T111415Z.bak.csv"
+"2025-10-16T11:14:54.316403","admin01","page_view","/dashboard","Visited dashboard"
+"2025-10-16T11:14:57.185382","admin01","page_view","/dataset","Viewed uploaded dataset"

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Admin Dashboard</h2>
+<p>
+    <a class="btn btn-sm btn-primary" href="{{ url_for('admin_entity_list', entity='users') }}">Manage Users</a>
+    <a class="btn btn-sm btn-primary" href="{{ url_for('admin_entity_list', entity='sites') }}">Manage Sites</a>
+    <a class="btn btn-sm btn-primary" href="{{ url_for('admin_entity_list', entity='minerals') }}">Manage Minerals</a>
+    <a class="btn btn-sm btn-primary" href="{{ url_for('admin_entity_list', entity='countries') }}">Manage Countries</a>
+</p>
+<p>
+    <a class="btn btn-sm btn-secondary" href="{{ url_for('admin_dataset_upload') }}">Upload/Replace Dataset</a>
+    <a class="btn btn-sm btn-info" href="{{ url_for('admin_dataset_share') }}">Share Dataset</a>
+</p>
+{% if role == 'Administrator' %}
+    <form method="post" action="{{ url_for('admin_audit_clear') }}" style="display:inline" onsubmit="return confirm('Clear recent audit log? A backup will be created.');">
+        <button class="btn btn-sm btn-warning">Clear Recent Audit Log</button>
+    </form>
+{% endif %}
+<h4>Recent Audit Log</h4>
+<table class="table table-sm table-striped">
+    <thead><tr><th>Timestamp (UTC)</th><th>User</th><th>Action</th><th>Path</th><th>Details</th></tr></thead>
+    <tbody>
+    {% for l in logs %}
+        <tr>
+            <td>{{ l.Timestamp }}</td>
+            <td>{{ l.Username }}</td>
+            <td>{{ l.Action }}</td>
+            <td>{{ l.Path }}</td>
+            <td>{{ l.Details }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<h4>Users</h4>
+<ul class="list-group">
+{% for u in users %}
+    <li class="list-group-item">{{ u.Username }} ({{ u.Email }}) — <a href="{{ url_for('admin_entity_edit', entity='users', obj_id=u.UserID) }}">Edit</a></li>
+{% endfor %}
+</ul>
+{% endblock %}

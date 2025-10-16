@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Geographical Visualization</h2>
+<div style="height: 600px;">
+    {{ map_html|safe }}
+</div>
+<div style="position: fixed; bottom: 50px; left: 10px; width: 220px; z-index:9999; font-size:12px;">
+    <div style="background:white; padding:8px; border:1px solid #ccc;">
+        <strong>Map layers</strong><br>
+        - Road Map: labeled basemap (English)<br>
+        - Satellite: imagery<br>
+        - Satellite Labels: English place names (toggle on for labels)<br>
+    </div>
+</div>
+{% endblock %}

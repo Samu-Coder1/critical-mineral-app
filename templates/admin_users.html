@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Manage Users</h2>
+<p><a class="btn btn-success btn-sm" href="{{ url_for('admin_add_user') }}">Add User</a></p>
+<table class="table table-striped">
+    <thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Role</th><th>Actions</th></tr></thead>
+    <tbody>
+    {% for u in users %}
+        <tr>
+            <td>{{ u.UserID }}</td>
+            <td>{{ u.Username }}</td>
+            <td>{{ u.Email }}</td>
+            <td>{{ roles_df[roles_df['RoleID'] == u.RoleID].iloc[0]['RoleName'] if false else u.RoleID }}</td>
+            <td>
+                <a class="btn btn-sm btn-primary" href="{{ url_for('admin_edit_user', user_id=u.UserID) }}">Edit</a>
+                <form method="post" action="{{ url_for('admin_delete_user', user_id=u.UserID) }}" style="display:inline" onsubmit="return confirm('Delete user?');">
+                    <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

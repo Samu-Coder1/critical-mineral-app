@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Upload / Replace Dataset</h2>
+<form method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label class="form-label">Excel (.xlsx) or CSV</label>
+        <input class="form-control" type="file" name="file" accept=".xlsx,.csv" required />
+    </div>
+    <button class="btn btn-primary" type="submit">Upload</button>
+    <a class="btn btn-secondary" href="{{ url_for('admin_dashboard') }}">Cancel</a>
+</form>
+{% endblock %}

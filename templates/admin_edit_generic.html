@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ title }}</h2>
+<form method="post">
+    {% if errors %}
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+            {% for e in errors %}
+                <li>{{ e }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    {% for f in fields %}
+        <div class="mb-3">
+            <label class="form-label">{{ f }}</label>
+            {% if select_options and (f in select_options) %}
+                <select name="{{ f }}" class="form-select">
+                    <option value="">-- select --</option>
+                    {% for opt in select_options[f] %}
+                        {% set opt_keys = opt.keys()|list %}
+                        {% set id_key = (opt_keys[0]) %}
+                        {% set label_key = (opt_keys[1]) if opt_keys|length>1 else opt_keys[0] %}
+                        <option value="{{ opt[id_key] }}" {% if form and (f in form) and (form[f]|string == opt[id_key]|string) or (not form and item and (f in item) and (item[f]|string == opt[id_key]|string)) %}selected{% endif %}>{{ opt[label_key] }}</option>
+                    {% endfor %}
+                </select>
+            {% else %}
+                {% set val = (form[f] if form and (f in form) else (item[f] if item and (f in item) else '')) %}
+                {% set input_type = 'text' %}
+                {% if f in ['Latitude','Longitude'] %}
+                    {% set input_type = 'number' %}
+                {% elif f in ['Production_tonnes'] %}
+                    {% set input_type = 'number' %}
+                {% endif %}
+                <input class="form-control" name="{{ f }}" type="{{ input_type }}" step="any" placeholder="{{ 'e.g. -13.3000 for latitude' if f=='Latitude' else ('e.g. 38.7500 for longitude' if f=='Longitude' else '') }}" value="{{ val }}" />
+            {% endif %}
+        </div>
+    {% endfor %}
+    {% if role == 'Administrator' %}
+        <button class="btn btn-primary" type="submit">Save</button>
+        <a class="btn btn-secondary" href="{{ url_for('admin_entity_list', entity=base_endpoint) }}">Cancel</a>
+    {% else %}
+        <a class="btn btn-secondary" href="{{ url_for('admin_entity_list', entity=base_endpoint) }}">Back</a>
+    {% endif %}
+</form>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+    const form = document.querySelector('form');
+    if(!form) return;
+    form.addEventListener('submit', function(e){
+        const latEl = form.querySelector('[name="Latitude"]');
+        const lonEl = form.querySelector('[name="Longitude"]');
+        const prodEl = form.querySelector('[name="Production_tonnes"]');
+        let errors = [];
+        function mark(el, ok){
+            if(!el) return;
+            if(ok) el.classList.remove('is-invalid'); else el.classList.add('is-invalid');
+        }
+        if(latEl){
+            const lat = parseFloat(latEl.value);
+            if(Number.isNaN(lat) || lat < -90 || lat > 90){ errors.push('Latitude must be between -90 and 90'); mark(latEl,false);} else mark(latEl,true);
+        }
+        if(lonEl){
+            const lon = parseFloat(lonEl.value);
+            if(Number.isNaN(lon) || lon < -180 || lon > 180){ errors.push('Longitude must be between -180 and 180'); mark(lonEl,false);} else mark(lonEl,true);
+        }
+        if(prodEl){
+            const p = parseFloat(prodEl.value || '0');
+            if(Number.isNaN(p) || p < 0){ errors.push('Production must be a non-negative number'); mark(prodEl,false);} else mark(prodEl,true);
+        }
+        if(errors.length){
+            e.preventDefault();
+            // show a simple alert block
+            let alert = document.querySelector('#clientErrors');
+            if(!alert){
+                alert = document.createElement('div');
+                alert.id = 'clientErrors';
+                alert.className = 'alert alert-danger';
+                form.insertBefore(alert, form.firstChild);
+            }
+            alert.innerHTML = '<ul>' + errors.map(x=>'<'+'li>'+x+'</li>').join('') + '</ul>';
+            window.scrollTo({top:0,behavior:'smooth'});
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Sites in {{ country_name }}</h2>
+<p>
+    <a class="btn btn-secondary btn-sm" href="{{ url_for('admin_entity_list', entity='sites') }}">Back to Sites</a>
+    {% if role == 'Administrator' %}
+        <form method="post" action="{{ url_for('admin_sites_delete_by_country', country_id=country_id) }}" style="display:inline" onsubmit="return confirm('Delete ALL sites in this country? This cannot be undone.');">
+            <button class="btn btn-danger btn-sm">Delete all sites in {{ country_name }}</button>
+        </form>
+    {% endif %}
+</p>
+<table class="table table-sm table-striped">
+    <thead>
+        <tr><th>SiteID</th><th>SiteName</th><th>MineralID</th><th>Latitude</th><th>Longitude</th><th>Production_tonnes</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+    {% for it in items %}
+        <tr>
+            <td>{{ it['SiteID'] }}</td>
+            <td>{{ it['SiteName'] }}</td>
+            <td>{{ it['MineralID'] }}</td>
+            <td>{{ it['Latitude'] }}</td>
+            <td>{{ it['Longitude'] }}</td>
+            <td>{{ it['Production_tonnes'] }}</td>
+            <td>
+                {% if role == 'Administrator' %}
+                    <a class="btn btn-sm btn-primary" href="{{ url_for('admin_entity_edit', entity='sites', obj_id=it['SiteID']) }}">Edit</a>
+                    <form method="post" action="{{ url_for('admin_entity_delete', entity='sites', obj_id=it['SiteID']) }}" style="display:inline" onsubmit="return confirm('Delete this site?');">
+                        <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                    </form>
+                {% else %}
+                    <span class="text-muted">Admin only</span>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Dashboard</h2>
+<div class="row mb-4">
+    <div class="col"><div class="card bg-info text-white"><div class="card-body">Countries: {{ total_countries }}</div></div></div>
+    <div class="col"><div class="card bg-success text-white"><div class="card-body">Minerals: {{ total_minerals }}</div></div></div>
+    <div class="col"><div class="card bg-warning text-dark"><div class="card-body">Sites: {{ total_sites }}</div></div></div>
+    <div class="col"><div class="card bg-danger text-white"><div class="card-body">Production ({{ latest_year }}): {{ total_production }} t</div></div></div>
+</div>
+
+<h3>Mineral Database</h3>
+<table class="table table-striped">
+    <thead><tr><th>Mineral</th><th>Description</th><th>Price (USD/tonne)</th></tr></thead>
+    <tbody>
+    {% for m in minerals %}
+        <tr>
+            <td>{{ m.MineralName }}</td>
+            <td>{{ m.Description }}</td>
+            <td>{{ "{:,.0f}".format(m.MarketPriceUSD_per_tonne) }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<h3 class="mt-4">Country Profiles</h3>
+<ul class="list-group">
+{% for c in countries %}
+    <li class="list-group-item">
+        <a href="{{ url_for('country_profile', country_id=c.CountryID) }}">{{ c.CountryName }}</a> — {{ c.KeyProjects }}
+    </li>
+{% endfor %}
+</ul>
+<p class="mt-4"><a class="btn btn-info btn-sm" href="{{ url_for('dataset_view') }}">View Uploaded Dataset</a></p>
+{% endblock %}

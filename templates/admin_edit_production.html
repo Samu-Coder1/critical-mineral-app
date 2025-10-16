@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ title }}</h2>
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label">Year</label>
+        <input class="form-control" name="Year" value="{{ item.Year if item else '' }}" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Country</label>
+        <select class="form-select" name="CountryID">
+            {% for c in countries %}
+                <option value="{{ c.CountryID }}" {% if item and item.CountryID == c.CountryID %}selected{% endif %}>{{ c.CountryName }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Mineral</label>
+        <select class="form-select" name="MineralID">
+            {% for m in minerals %}
+                <option value="{{ m.MineralID }}" {% if item and item.MineralID == m.MineralID %}selected{% endif %}>{{ m.MineralName }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Production (tonnes)</label>
+        <input class="form-control" name="Production_tonnes" value="{{ item.Production_tonnes if item else '' }}" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Export Value (Billion USD)</label>
+        <input class="form-control" name="ExportValue_BillionUSD" value="{{ item.ExportValue_BillionUSD if item else '' }}" />
+    </div>
+
+    <button class="btn btn-primary" type="submit">Save</button>
+    <a class="btn btn-secondary" href="{{ url_for('admin_entity_list', entity='production') }}">Cancel</a>
+</form>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ country.CountryName }}</h2>
+<ul class="list-group mb-4">
+    <li class="list-group-item"><strong>GDP:</strong> ${{ country.GDP_BillionUSD }} Billion USD</li>
+    <li class="list-group-item"><strong>Mining Revenue:</strong> ${{ country.MiningRevenue_BillionUSD }} Billion USD</li>
+    <li class="list-group-item"><strong>Key Projects:</strong> {{ country.KeyProjects }}</li>
+</ul>
+
+<div>{{ prod_chart|safe }}</div>
+<div>{{ export_chart|safe }}</div>
+
+<a href="{{ url_for('dashboard') }}" class="btn btn-secondary mt-3">← Back to Dashboard</a>
+{% endblock %}
