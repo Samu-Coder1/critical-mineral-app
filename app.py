@@ -13,7 +13,7 @@ from lib.entities import ENTITIES  # your own file that keeps info or settings a
 from lib.app_utils import backup_file, ensure_csv_header  # your own tools that make backups and check if CSV files have correct headings
 from lib.map_helpers import build_map_html  # your own function that helps create the map in HTML for the website
 
-# Ensure Flask uses the project's `templates/` directory (not data/templates)
+# Ensure Flask uses the projects templates directory (not data/templates)
 app = Flask(__name__, template_folder=os.path.join(os.path.dirname(__file__), 'templates'))  # create the Flask app and show where the HTML templates are
 app.secret_key = 'african_critical_minerals_2025'  # secret key for security, used to protect sessions and messages 
 
